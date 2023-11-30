@@ -6,20 +6,26 @@
   </head>
   <body>
     <h1>Add Post</h1>
-    <form method="POST" action="/addedpost">
-        <p>
-            <label for="topic">Select Topic:</label>
-            <select id="topic" name="topic">
-                <% topicsData.forEach(topic => { %>
-                    <option value="<%= topic.id %>"><%= topic.topicName %></option>
-                <% }); %>
-            </select>
-        </p>
-        <p>
-            <label for="description">Post Description:</label>
-            <textarea id="description" name="description" rows="4" cols="50" placeholder="Enter your post description"></textarea>
-        </p>
-        <input type="submit" value="Post it!" />
-    </form>
+    <!--Check if the user has at least 1 topic subscribed to before being able to post anything-->
+    <% if (topicsData.length === 0) { %>
+        <p>Sorry, you need to subscribe to topics first.</p>
+    <% } else { %>
+        <form method="POST" action="/addedpost">
+            <p>
+                <label for="topic">Select Topic:</label>
+                 <!--Go through all topics and assign them to a selection box for the user to choose-->
+                <select id="topic" name="topic">
+                    <% topicsData.forEach(topic => { %>
+                        <option value="<%= topic.id %>"><%= topic.topicName %></option>
+                    <% }); %>
+                </select>
+            </p>
+            <p>
+                <label for="description">Post Description:</label>
+                <textarea id="description" name="description" rows="4" cols="50" placeholder="Enter your post description"></textarea>
+            </p>
+            <input type="submit" value="Post it!" />
+        </form>
+    <% } %>
   </body>
 </html>

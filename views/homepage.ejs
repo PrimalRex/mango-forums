@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Welcome to <%= forumName %></title>
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <div class="navbar">
+        <h1>Welcome to <%= forumName %></h1>
+        <!-- Only allow a logout if the broswer has cached a username, aka a live session-->
+        <% if (forumUsername != "") { %>
+            <div class="user-info">
+                <p>Welcome, <%= forumUsername %>!</p>
+                <form action="/logout" method="post">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        <% } %>
+    </div>
+    <ul>
+        <li><a href="/topics">List Topics</a></li>
+        <li><a href="/users">List Users</a></li>
+        <li><a href="/posts">List Posts</a></li>
+        <li><a href="/addpost">Add a New Post</a></li>
+        <li><a href="/search">Search for Posts</a></li>
+        <li><a href="/about">About <%= forumName %></a></li>
+    </ul>
+</body>
+</html>
