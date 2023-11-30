@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Welcome to <%=forumName%></title>
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <h1>Mango Forums Posts:</h1>
+    <ul>
+        <!-- Create a for loop to go through all topics array-->
+        <% for (let i = 0; i < postsData.length; i++) { %>
+            <li>          
+                <!-- At each index get the name and creator and put join them in the list element-->
+                <strong><%= postsData[i].description %></strong> -> Posted By <%= postsData[i].creatorUsername %> -> in <%= postsData[i].topicName %>
+            </li>
+        <% } %>
+    </ul>
+  </body>
+</html>

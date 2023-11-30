@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Welcome to <%=forumName%></title>
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <h1>Mango Forums Users:</h1>
+    <ul>
+        <!-- Create a for loop to go through all users array-->
+        <% for (let i = 0; i < totalUsers.length; i++) { %>
+            <li>          
+                <!-- At each index use the name as the element-->
+                <strong><%= totalUsers[i].userName %></strong>
+            </li>
+        <% } %>
+    </ul>
+  </body>
+</html>
