@@ -6,14 +6,22 @@
   </head>
   <body>
     <h1>Mango Forums Posts:</h1>
-    <ul>
-        <!-- Create a for loop to go through all topics array-->
+    <section class="forum-posts">
+      <ul>
+        <!-- Create a loop to iterate through all posts in postsData array -->
         <% for (let i = 0; i < postsData.length; i++) { %>
-            <li>          
-                <!-- At each index get the name and creator and put join them in the list element-->
-                <strong><%= postsData[i].description %></strong> -> Posted By <%= postsData[i].creatorUsername %> -> in <%= postsData[i].topicName %>
-            </li>
+          <li class="post">
+            <div class="post-details">
+              <!-- Display post details, such as description, creator, and topic -->
+              <p>Posted By <%= postsData[i].creatorUsername %> -> <%= postsData[i].topicName %></p>
+            </div>
+            <div class="post-content">
+              <!-- Display larger text content for the post -->
+              <strong><%= postsData[i].description %></strong> 
+            </div>
+          </li>
         <% } %>
-    </ul>
+      </ul>
+    </section>
   </body>
 </html>

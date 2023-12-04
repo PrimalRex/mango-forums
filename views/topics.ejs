@@ -7,13 +7,28 @@
   <body>
     <h1>Mango Forums Topics:</h1>
     <ul>
-        <!-- Create a for loop to go through all topics array-->
-        <% for (let i = 0; i < topicsData.length; i++) { %>
-            <li>          
-                <!-- At each index get the name and creator and put join them in the list element-->
-                <strong><%= topicsData[i].topicName %></strong> -> Created By <%= topicsData[i].creatorUsername %>
-            </li>
-        <% } %>
+      <!-- Create a for loop to go through all topics array-->
+      <% for (let i = 0; i < topicsData.length; i++) { %>
+        <li>
+          <!-- Display topic name, creator, and follow button if not in the blacklist -->
+          <strong><%= topicsData[i].topicName %></strong> -> Created By <%= topicsData[i].creatorUsername %>
+          <% if (!blacklist.includes(topicsData[i].topicName)) { %>
+            <div class="post">
+              <form action="/follow-topic" method="POST">
+                <input type="hidden" name="topic" value="<%= topicsData[i].id %>">
+                <button type="submit" class="custom-button">
+                  Follow This Topic
+                </button>
+              </form>
+            </div>
+          <% } else { %>
+            <!-- if we already follow the page we can just place a text -->
+            <div class="post">
+              <p>(You are already following this topic)</p>
+            </div>
+          <% } %>
+        </li>
+      <% } %>
     </ul>
   </body>
 </html>
