@@ -14,7 +14,7 @@
           <strong><%= topicsData[i].topicName %></strong> -> Created By <%= topicsData[i].creatorUsername %>
           <% if (!blacklist.includes(topicsData[i].topicName)) { %>
             <div class="post">
-              <form action="/follow-topic" method="POST">
+              <form action="/followtopic" method="POST">
                 <input type="hidden" name="topic" value="<%= topicsData[i].id %>">
                 <button type="submit" class="custom-button">
                   Follow This Topic

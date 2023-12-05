@@ -91,6 +91,16 @@ a:hover {
   font-size: 14px;
 }
 
+.post form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.post label {
+  margin-bottom: 5px;
+}
+
 .custom-button {
   display: inline-block;
   padding: 10px 100px;

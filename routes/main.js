@@ -120,8 +120,6 @@ module.exports = function (app, forumData) {
             blacklist: blacklist,
           });
           console.log(blacklist);
-
-          // Render the EJS template with the extended data
           res.render("topics.ejs", newData);
         });
       } else {
@@ -131,14 +129,13 @@ module.exports = function (app, forumData) {
           blacklist: blacklist,
         });
         console.log(newData);
-
         res.render("topics.ejs", newData);
       }
     });
   });
 
   //When the follow button is clicked on the follow page
-  app.post("/follow-topic", function (req, res) {
+  app.post("/followtopic", function (req, res) {
     // Perform the database update to indicate that the user follows the topic
     let sqlquery =
       "INSERT INTO UserTopics (userID, topicID) VALUES (?, ?)";
@@ -147,7 +144,8 @@ module.exports = function (app, forumData) {
     db.query(sqlquery, [req.session.userId, req.body.topic], (err, result) => {
       if (err) {
         console.log(err);
-        res.redirect("./");
+        // We will assume that if we didnt have a valid userID that the user is not logged in yet so redirect to there
+        res.redirect("/login");
       } else {
         // Redirect to the topics page after successful follow
         res.redirect("/topics");

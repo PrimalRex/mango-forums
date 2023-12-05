@@ -5,11 +5,16 @@
     <link rel="stylesheet"  type="text/css" href="/main.css" />
   </head>
   <body>
-    <h1>Search <%=forumName%></h1>
-    <form action="/searchedpostsresult" method="GET">
-      <p>Enter a keyword to search against Posts: </p>
-      <input id="search-box" type="text" name="keyword" value="">
-      <input type="submit" value="Search" >
-    </form>
+    <h1>Search <%= forumName %></h1>
+    <div class="post">
+      <form action="/searchedpostsresult" method="GET">
+        <p>Enter a keyword to search against Posts: </p>
+        <input id="search-box" type="text" name="keyword" value="">
+        <br>
+        <button type="submit" class="custom-button">
+          Search
+        </button>
+      </form>
+    </div>
   </body>
 </html>
