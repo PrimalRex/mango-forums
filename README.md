@@ -3,9 +3,9 @@
 
 # Modules Required to Install:
  - npm install ejs
- - npm install ejs
- - npm install ejs
- - npm install ejs
+ - npm install mysql
+ - npm install express
+ - npm install express-session
 
 # Usage
  - Extract files into directory of choice
