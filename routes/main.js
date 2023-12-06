@@ -19,12 +19,12 @@ module.exports = function (app, forumData) {
     db.query(sqlquery, [req.body.email, req.body.password], (err, result) => {
       if (err) {
         console.error(err);
-        return res.redirect("/login");
+        return res.redirect("./login");
       }
 
       // If the returning password is null or the password doesnt match we prompt the login again
       if (result.length === 0 || req.body.password !== result[0].password) {
-        return res.redirect("/login");
+        return res.redirect("./login");
       }
 
       // If all else is good then we can cache the userID
@@ -36,7 +36,7 @@ module.exports = function (app, forumData) {
       db.query(sqlquery2, [userId], (err, result) => {
         if (err) {
           console.error(err);
-          return res.redirect("/login");
+          return res.redirect("./login");
         }
         // Store the username in the session
         req.session.forumUsername = result[0].userName;
@@ -67,16 +67,20 @@ module.exports = function (app, forumData) {
     let sqlquery =
       "INSERT INTO Users (userName, email, password) VALUES (?, ?, ?)";
 
-    db.query(sqlquery, [req.body.username, req.body.email, req.body.password], (err, result) => {
-      if (err) {
-        console.error(err);
-        // Stay on the same page if there was an issue
-        res.redirect("/register");
-      } else {
-        // Redirect to the login if successful
-        res.redirect("/login"); 
+    db.query(
+      sqlquery,
+      [req.body.username, req.body.email, req.body.password],
+      (err, result) => {
+        if (err) {
+          console.error(err);
+          // Stay on the same page if there was an issue
+          res.redirect("/register");
+        } else {
+          // Redirect to the login if successful
+          res.redirect("./login");
+        }
       }
-    });
+    );
   });
 
   // About page route
@@ -88,7 +92,7 @@ module.exports = function (app, forumData) {
   app.get("/topics", function (req, res) {
     // Get information about all topics and their creators
     let sqlquery =
-      "SELECT *, Users.userName AS creatorUsername FROM Topics INNER JOIN Users ON Topics.creatorUserID = Users.id";
+      "SELECT Topics.*, Users.userName AS creatorUsername FROM Topics INNER JOIN Users ON Topics.creatorUserID = Users.id";
 
     // Create a blacklist array, we will fill this with topics the user already follows
     var blacklist = " ";
@@ -143,10 +147,10 @@ module.exports = function (app, forumData) {
       if (err) {
         console.log(err);
         // We will assume that if we didnt have a valid userID that the user is not logged in yet so redirect to there
-        res.redirect("/login");
+        res.redirect("./login");
       } else {
         // Redirect to the topics page after successful follow
-        res.redirect("/topics");
+        res.redirect("./topics");
       }
     });
   });
@@ -172,20 +176,20 @@ module.exports = function (app, forumData) {
     // Get information about all posts, including post name, creator username, and topic name
     let sqlquery =
       "SELECT Posts.*, Users.userName AS creatorUsername, Topics.topicName FROM Posts INNER JOIN Users ON Posts.UserID = Users.id INNER JOIN Topics ON Posts.TopicID = Topics.id";
-  
+
     // execute sql query
     db.query(sqlquery, (err, result) => {
       if (err) {
         res.redirect("./");
       }
-  
+
       // Extended the forum base data to include the SQL result
       let newData = Object.assign({}, forumData, { postsData: result });
       console.log(newData);
       res.render("posts.ejs", newData);
     });
   });
-  
+
   // Add a post
   app.get("/addpost", function (req, res) {
     // Check if the user is authenticated by checking the session
@@ -193,7 +197,7 @@ module.exports = function (app, forumData) {
       // Get the subscribed topics for the logged-in user
       let userId = req.session.userId;
       let sqlquery =
-        "SELECT * FROM Topics INNER JOIN UserTopics ON Topics.id = UserTopics.TopicID WHERE UserTopics.UserID = " +
+        "SELECT Topics.* FROM Topics INNER JOIN UserTopics ON Topics.id = UserTopics.TopicID WHERE UserTopics.UserID = " +
         userId;
 
       db.query(sqlquery, [userId], (err, userSubscribedTopics) => {
@@ -206,7 +210,7 @@ module.exports = function (app, forumData) {
       });
     } else {
       // If the user isnt authenticated, then get them to login
-      res.redirect("./login"); 
+      res.redirect("./login");
     }
   });
 
