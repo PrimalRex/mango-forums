@@ -11,4 +11,7 @@
  - Extract files into directory of choice
  - npm init in the root folder
     - node should detect the dependencies and will install them for you, if not install the ones above
- - Run index.js
+ - Run index.js to confirm it opens
+ - Run the create_db.sql and insert_test_data.sql
+ - Run index.js and confirm the test data appears in the different pages
+ - Done
