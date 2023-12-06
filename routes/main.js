@@ -54,7 +54,7 @@ module.exports = function (app, forumData) {
     delete req.session.forumUsername;
     forumData.forumUsername = "";
     // Redirect to the homepage to refresh
-    res.redirect("/");
+    res.redirect("./");
   });
 
   app.get("/register", (req, res) => {
@@ -67,15 +67,14 @@ module.exports = function (app, forumData) {
     let sqlquery =
       "INSERT INTO Users (userName, email, password) VALUES (?, ?, ?)";
 
-    // Assuming that your registration form has fields named 'username', 'email', and 'password'
-    const { username, email, password } = req.body;
-
-    db.query(sqlquery, [username, email, password], (err, result) => {
+    db.query(sqlquery, [req.body.username, req.body.email, req.body.password], (err, result) => {
       if (err) {
         console.error(err);
-        res.redirect("/register"); // Redirect to the registration page in case of an error
+        // Stay on the same page if there was an issue
+        res.redirect("/register");
       } else {
-        res.redirect("/login"); // Redirect to the login page after successful registration
+        // Redirect to the login if successful
+        res.redirect("/login"); 
       }
     });
   });
@@ -89,7 +88,7 @@ module.exports = function (app, forumData) {
   app.get("/topics", function (req, res) {
     // Get information about all topics and their creators
     let sqlquery =
-      "SELECT Topics.*, Users.userName AS creatorUsername FROM Topics INNER JOIN Users ON Topics.creatorUserID = Users.id";
+      "SELECT *, Users.userName AS creatorUsername FROM Topics INNER JOIN Users ON Topics.creatorUserID = Users.id";
 
     // Create a blacklist array, we will fill this with topics the user already follows
     var blacklist = " ";
@@ -137,8 +136,7 @@ module.exports = function (app, forumData) {
   //When the follow button is clicked on the follow page
   app.post("/followtopic", function (req, res) {
     // Perform the database update to indicate that the user follows the topic
-    let sqlquery =
-      "INSERT INTO UserTopics (userID, topicID) VALUES (?, ?)";
+    let sqlquery = "INSERT INTO UserTopics (userID, topicID) VALUES (?, ?)";
 
     console.log(req.body.topic);
     db.query(sqlquery, [req.session.userId, req.body.topic], (err, result) => {
@@ -174,21 +172,20 @@ module.exports = function (app, forumData) {
     // Get information about all posts, including post name, creator username, and topic name
     let sqlquery =
       "SELECT Posts.*, Users.userName AS creatorUsername, Topics.topicName FROM Posts INNER JOIN Users ON Posts.UserID = Users.id INNER JOIN Topics ON Posts.TopicID = Topics.id";
-
+  
     // execute sql query
     db.query(sqlquery, (err, result) => {
       if (err) {
         res.redirect("./");
       }
-
-      // Extended the forum base data to include the sql result
+  
+      // Extended the forum base data to include the SQL result
       let newData = Object.assign({}, forumData, { postsData: result });
       console.log(newData);
-
       res.render("posts.ejs", newData);
     });
   });
-
+  
   // Add a post
   app.get("/addpost", function (req, res) {
     // Check if the user is authenticated by checking the session
@@ -196,7 +193,7 @@ module.exports = function (app, forumData) {
       // Get the subscribed topics for the logged-in user
       let userId = req.session.userId;
       let sqlquery =
-        "SELECT Topics.* FROM Topics INNER JOIN UserTopics ON Topics.id = UserTopics.TopicID WHERE UserTopics.UserID = " +
+        "SELECT * FROM Topics INNER JOIN UserTopics ON Topics.id = UserTopics.TopicID WHERE UserTopics.UserID = " +
         userId;
 
       db.query(sqlquery, [userId], (err, userSubscribedTopics) => {
@@ -209,7 +206,7 @@ module.exports = function (app, forumData) {
       });
     } else {
       // If the user isnt authenticated, then get them to login
-      res.redirect("/login");
+      res.redirect("./login"); 
     }
   });
 
@@ -222,6 +219,7 @@ module.exports = function (app, forumData) {
       sqlquery,
       [req.body.description, req.body.topic, req.session.userId],
       (err, result) => {
+        //Whether we error or not we will want to go back to the homepage
         if (err) {
           res.redirect("./");
         } else {
@@ -233,27 +231,45 @@ module.exports = function (app, forumData) {
 
   // Route to page where user can specify keyword to search for
   app.get("/search", function (req, res) {
-    res.render("searchposts.ejs", forumData);
+    let sqlquery = "SELECT * FROM Topics";
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+      if (err) {
+        res.redirect("./");
+      }
+
+      // Extended the forum base data to include the sql result
+      let newData = Object.assign({}, forumData, { topicsData: result });
+      console.log(newData);
+
+      res.render("searchposts.ejs", newData);
+    });
   });
 
-  // Keyword based query for a return page with the list of matching posts
+  // Keyword and topic based query for a return page with the list of matching posts
   app.get("/searchedpostsresult", function (req, res) {
     // Query to find posts that contain the specified keyword
     let sqlquery =
       "SELECT Posts.*, Users.id AS creatorID, Users.userName AS creatorUsername, Topics.topicName FROM Posts INNER JOIN Users ON Posts.UserID = Users.id INNER JOIN Topics ON Posts.TopicID = Topics.id WHERE Posts.description LIKE ?";
+
+    // Use the keyword and topic that was sent from the form to be use in the query
     let keyword = "%" + req.query.keyword + "%";
+    let topic = req.query.topic === "all" ? "%" : req.query.topic;
+    // Extended default searching to include topic exclusions
+    sqlquery += " AND (Topics.id LIKE ? OR 'all' LIKE ?)";
 
     // execute sql query
-    db.query(sqlquery, [keyword], (err, result) => {
+    db.query(sqlquery, [keyword, topic, topic], (err, result) => {
       if (err) {
         console.error(err);
         res.redirect("./");
       } else {
         // Merge the result into the forumdata so that it can be passed into the EJS file
-        // Extended the new data to pass the 'keyword' in so that the result page can show that with the matching list
+        // Pass the 'keyword' and 'topic' in so that the result page can show that with the matching list
         let newData = Object.assign({}, forumData, {
           postsData: result,
           query: req.query.keyword,
+          selectedTopic: req.query.topic,
         });
         console.log(newData);
         res.render("searchedpostsresult.ejs", newData);

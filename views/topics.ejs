@@ -12,6 +12,10 @@
         <li>
           <!-- Display topic name, creator, and follow button if not in the blacklist -->
           <strong><%= topicsData[i].topicName %></strong> -> Created By <%= topicsData[i].creatorUsername %>
+          <div class="post">
+            <!-- Display post details, such as creator, and topic -->
+            <p><%= topicsData[i].description %></p>
+          </div>
           <% if (!blacklist.includes(topicsData[i].topicName)) { %>
             <div class="post">
               <form action="/followtopic" method="POST">
@@ -24,7 +28,7 @@
           <% } else { %>
             <!-- if we already follow the page we can just place a text -->
             <div class="post">
-              <p>(You are already following this topic)</p>
+              <p>Seems like you are already following this topic :)</p>
             </div>
           <% } %>
         </li>

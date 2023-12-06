@@ -4,8 +4,8 @@ USE mangoForums;
 
 INSERT INTO Users (userName, email, password) VALUES ('MangoPro', 'mangopro@example.com', 'secret123');
 
-INSERT INTO Topics (topicName, description, creatorUserID) VALUES ('New Topic', 'Description of the new topic', 1);
-INSERT INTO Topics (topicName, description, creatorUserID) VALUES ('New Topic 2 ', 'another one', 1);
+INSERT INTO Topics (topicName, description, creatorUserID) VALUES ('Welcome To Mango Forums', 'Hello and welcome, we hope you have some fun on this topic, ask anything!', 1);
+INSERT INTO Topics (topicName, description, creatorUserID) VALUES ('Movies & Cinema', 'Ask away with anything related to movies and cinema!', 1);
 
 INSERT INTO UserTopics (UserID, TopicID) VALUES (1, 1);
-INSERT INTO Posts (description, TopicID, UserID) VALUES ('This is a new post in the new topic', 1, 1);
+INSERT INTO Posts (description, TopicID, UserID) VALUES ('Test post for welcome topic', 1, 1);

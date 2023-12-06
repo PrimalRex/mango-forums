@@ -11,6 +11,14 @@
         <p>Enter a keyword to search against Posts: </p>
         <input id="search-box" type="text" name="keyword" value="">
         <br>
+        <label for="topic">Select a Topic:</label>
+        <select id="topic" name="topic">
+          <option value="all">All Topics</option>
+          <% for (let i = 0; i < topicsData.length; i++) { %>
+            <option value="<%= topicsData[i].id %>"><%= topicsData[i].topicName %></option>
+          <% } %>
+        </select>
+        <br>
         <button type="submit" class="custom-button">
           Search
         </button>

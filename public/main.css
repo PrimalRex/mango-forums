@@ -1,4 +1,4 @@
-/* Define the @font-face rule to include your custom font */
+/* Custom font */
 @font-face {
   font-family: 'Basement Grotesque';
   src: url('BasementGrotesque-Black_v1.202.ttf') format('truetype');
@@ -15,9 +15,10 @@ body {
   margin: 0;
   font-family: 'Basement Grotesque', sans-serif;
   color: #333;
-  background-color: #f5f5f5; /* Set a light background color */
+  background-color: #f5f5f5;
 }
 
+/* Orange center bar for aesthetic*/
 body::before {
   content: '';
   position: absolute;
@@ -25,27 +26,29 @@ body::before {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 100vh; /* Adjust the width of the vertical bar */
-  background-color: #ff8c00; /* Set the color of the vertical bar */
+  width: 100vh;
+  background-color: #ff8c00;
   z-index: -1;
 }
 
+/* header/title*/
 header {
-  background-color: rgb(185, 104, 34); /* Set header background color */
+  background-color: rgb(185, 104, 34);
   padding: 20px;
   text-align: center;
 }
 
 h1 {
   margin: 0;
-  color: #fff; /* Set header text color */
+  color: #fff;
 }
 
 main {
-  width: 80%; /* Adjust main content width */
+  width: 80%;
   margin: 20px 0;
 }
 
+/* unordered list wrapper, for the menu*/
 ul {
   list-style-type: none;
   padding: 0;
@@ -54,27 +57,31 @@ ul {
   align-items: center;
 }
 
+/* List item wrapper, allows for rounded edges*/
 li {
   margin: 10px 0;
   padding: 15px;
-  border: 1px solid #ddd; /* Add a border for each post */
-  border-radius: 8px; /* Rounded corners for the posts */
+  border: 1px solid #ddd;
+  border-radius: 8px; 
   width: 100%;
   box-sizing: border-box;
-  background-color: #fff; /* Set post background color */
+  background-color: #fff;
 }
 
+/* When any link is unhovered*/
 a {
   text-decoration: none;
-  color: rgb(0, 0, 0); /* Set link color */
+  color: rgb(0, 0, 0);
   font-weight: bold;
 }
 
+/* When any link is hovered*/
 a:hover {
   text-decoration: underline;
-  color: #0056b3; /* Set link color on hover */
+  color: #000000;
 }
 
+/* post wrapper, this applies to most pages where a post or some kind of box is used */
 .post {
   margin: 10px 0;
   padding: 15px;
@@ -86,28 +93,33 @@ a:hover {
   max-width: 50vh;
 }
 
+/* any text within the post can be shrunk */
 .post-details {
   margin-bottom: 10px;
   font-size: 14px;
 }
 
+/* aligning any forms in any post wrappers */
 .post form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
+/* offset for any form texts */
 .post label {
   margin-bottom: 5px;
 }
 
+/* custom button so that it matches the color scheme and style */
 .custom-button {
   display: inline-block;
-  padding: 10px 100px;
+  padding: 10px 10vh;
   font-family: 'Basement Grotesque', sans-serif;
   font-size: 16px;
   font-weight: bold;
   text-align: center;
+  align-self: center;
   text-decoration: none;
   cursor: pointer;
   border: 2px solid #ff8c00;
@@ -117,6 +129,7 @@ a:hover {
   transition: background-color 0.3s, color 0.3s;
 }
 
+/* When hovering on the custom button, just change colour */
 .custom-button:hover {
   background-color: #ff8c00;
   color: #fff;
